@@ -4,7 +4,7 @@ const weather = document.querySelector(".weather");
 
 const defaultCity = "cairo";
 const apiKey = "ad20ccd6ec864f68aa6161947232502";
-const baseURL = "http://api.weatherapi.com/v1/forecast.json?key=";
+const baseURL = "https://api.weatherapi.com/v1/forecast.json?key=";
 const city = "&q=";
 const days = "&days=3";
 
