@@ -83,7 +83,7 @@ function showSuggestions(list) {
 
 function select(chosenCity) {
   let selectedCity = chosenCity.textContent;
-  console.log(selectedCity);
+  // console.log(selectedCity);
   citySearch.value = selectedCity;
   searchBox.classList.remove("active");
   addData(selectedCity);
