@@ -52,14 +52,13 @@
     </header>
     <main class="background p-4">
         <div class="container p-5">
-            <div class="search">
-                <div class="input-group">
-                    <input type="text" class="citySearch form-control position-relative p-3 border-0"
-                        placeholder="Enter the location">
-                    <button class="btn btn-info position-absolute border-0 search" type="button">Find</button>
+            <div class="search-input flex-column">
+                <input type="text" class="citySearch form-control w-100 p-3 border-0" placeholder="Enter the location">
+                <div class="autocom-box">
                 </div>
+                <button class="btn btn-info position-absolute border-0 search" type="button">Find</button>
             </div>
-            <div class="row weather my-5">
+            <div class="row weather mx-1 my-5">
                 <div class="col-4 today text-white">
                     <div class="header">
                         <div class="day"></div>
@@ -115,7 +114,7 @@
         <div class="container">
             <div class="row">
                 <div class="subscribe col-md-8 mb-3">
-                    <div class="input-group">
+                    <div class="search-input">
                         <input type="text" class="form-control position-relative p-3 border-0 "
                             placeholder="Enter your email to subscribe..">
                         <button class="btn btn-info position-absolute border-0" type="button">Subscribe</button>

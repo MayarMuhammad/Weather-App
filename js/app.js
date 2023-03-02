@@ -1,10 +1,15 @@
 const citySearch = document.querySelector(".citySearch");
 const searchBtn = document.querySelector(".search");
 const weather = document.querySelector(".weather");
+const searchBox = document.querySelector(".search-input");
+const suggestionBox = document.querySelector(".autocom-box");
 
 const defaultCity = "cairo";
-const apiKey = "ad20ccd6ec864f68aa6161947232502";
-const baseURL = "http://api.weatherapi.com/v1/forecast.json?key=";
+
+const baseURL = "http://api.weatherapi.com/v1";
+const apiKey = "key=ad20ccd6ec864f68aa6161947232502";
+const searchAPI = "/search.json?";
+const forecastAPI = "/forecast.json?";
 const city = "&q=";
 const days = "&days=3";
 
@@ -36,13 +41,52 @@ months[11] = "December";
 
 let d = new Date();
 
-citySearch.addEventListener("keyup", performAction);
-citySearch.addEventListener("keyup", performAction);
-
-function performAction() {
-  if (this.value.length >= 3) {
-    addData(citySearch.value);
+citySearch.addEventListener("keyup", function (e) {
+  let userData = e.target.value;
+  let filteredData = [];
+  if (userData) {
+    getWeatherSearchData(userData).then((data) => {
+      for (let i = 0; i < data.length; i++) {
+        filteredData[i] = `${data[i].name}, ${data[i].country}`;
+      }
+      let matchedSuggestions = [];
+      matchedSuggestions = filteredData.filter((matchedData) => {
+        return matchedData
+          .toLocaleLowerCase()
+          .startsWith(userData.toLocaleLowerCase());
+      });
+      matchedSuggestions = matchedSuggestions.map((data) => {
+        return (data = `<li>${data}</li>`);
+      });
+      searchBox.classList.add("active");
+      showSuggestions(matchedSuggestions);
+      let allList = suggestionBox.querySelectorAll("li");
+      for (let i = 0; i < allList.length; i++) {
+        allList[i].setAttribute("onclick", "select(this)");
+      }
+    });
+  } else {
+    searchBox.classList.remove("active");
   }
+});
+
+function showSuggestions(list) {
+  let listData;
+  if (!list.length) {
+    userValue = citySearch.value;
+    listData = `<li>${userValue}</li>`;
+  } else {
+    listData = list.join("");
+  }
+  suggestionBox.innerHTML = listData;
+}
+
+function select(chosenCity) {
+  let selectedCity = chosenCity.textContent;
+  console.log(selectedCity);
+  citySearch.value = selectedCity;
+  searchBox.classList.remove("active");
+  addData(selectedCity);
 }
 
 function addData(cityName) {
@@ -70,8 +114,18 @@ function addData(cityName) {
   });
 }
 
+const getWeatherSearchData = async (searchValue) => {
+  let URL = baseURL + searchAPI + apiKey + city + searchValue;
+  const res = await fetch(URL);
+  if (res.status != 400 && res.ok) {
+    const data = await res.json();
+    // console.log(data);
+    return data;
+  }
+};
+
 const getWeatherData = async (citySearched) => {
-  let URL = baseURL + apiKey + city + citySearched + days;
+  let URL = baseURL + forecastAPI + apiKey + city + citySearched + days;
   const res = await fetch(URL);
   // console.log(res);
   if (res.status != 400 && res.ok) {
